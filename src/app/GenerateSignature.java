@@ -9,6 +9,7 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Calendar;
 
 public class GenerateSignature {
 
@@ -36,7 +37,13 @@ public class GenerateSignature {
 		// Initializing the signature
 		sign.initSign(privKey);
 
-		byte[] data = "INV001|0005|".getBytes(StandardCharsets.UTF_8);
+//		Date     currentDate = new Date();
+		Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
+		calendar.add(Calendar.SECOND, 60);
+		Long   unixTime = calendar.getTimeInMillis();
+		String dataStr  = "INV001|" + unixTime + "|";
+
+		byte[] data     = dataStr.getBytes(StandardCharsets.UTF_8);
 
 		// Adding data to the signature
 		sign.update(data);
